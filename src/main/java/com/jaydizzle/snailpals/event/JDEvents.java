@@ -24,4 +24,5 @@ public class JDEvents {
             event.put(JDEntityTypes.SNAIL.get(), SnailEntityClass.setAttributes());
         }
     }
+
 }

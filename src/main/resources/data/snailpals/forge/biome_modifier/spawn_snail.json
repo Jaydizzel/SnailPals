@@ -8,7 +8,7 @@
   ],
   "spawners": {
     "type": "snailpals:snail",
-    "weight": 20,
+    "weight": 40,
     "minCount": 1,
     "maxCount": 5
   }

@@ -109,7 +109,7 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(2, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.5D));
         this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.5D, 4.0F, 2.0F, false));
-        this.goalSelector.addGoal(5, new TemptGoal(this, 2.0D, Ingredient.of(Items.SLIME_BALL), false));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 2.0D, Ingredient.of(Items.BROWN_MUSHROOM), false));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6F));
@@ -141,7 +141,7 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
         }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 0.15F, 1.0F);
+        this.playSound(SoundEvents.BEEHIVE_WORK, 0.15F, 1.0F);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -224,7 +224,7 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
         super.setTame(tamed);
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.15D);
 
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0D);
