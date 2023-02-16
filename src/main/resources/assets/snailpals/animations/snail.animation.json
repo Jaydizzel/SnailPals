@@ -1,7 +1,7 @@
 {
   "format_version": "1.8.0",
   "animations": {
-    "animation.model.idle": {
+    "animation.snail.idle": {
       "loop": true,
       "bones": {
         "eyes": {
@@ -11,7 +11,7 @@
         }
       }
     },
-    "animation.model.walk": {
+    "animation.snail.walk": {
       "animation_length": 0.5,
       "bones": {
         "body": {
@@ -55,6 +55,9 @@
           }
         }
       }
+    },
+    "animation.snail.sitting": {
+      "loop": true
     }
   },
   "geckolib_format_version": 2

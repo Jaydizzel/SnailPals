@@ -15,7 +15,7 @@ public class JDItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, SnailPals.MOD_ID);
 
     public static final RegistryObject<Item> SNAIL_SPAWN_EGG = ITEMS.register("snail_spawn_egg",
-            () -> new ForgeSpawnEggItem(JDEntityTypes.SNAIL, 0x22b341, 0x19732e,
+            () -> new ForgeSpawnEggItem(JDEntityTypes.SNAIL, 0xBC8238, 0x40AB20,
                     new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
     public static void register(IEventBus eventBus) {

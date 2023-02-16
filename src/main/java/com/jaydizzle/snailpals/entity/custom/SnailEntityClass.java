@@ -1,24 +1,39 @@
 package com.jaydizzle.snailpals.entity.custom;
 
+import com.jaydizzle.snailpals.entity.JDEntityTypes;
+import com.jaydizzle.snailpals.entity.variant.SnailVariant;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.scores.Team;
+import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -28,32 +43,77 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class SnailEntityClass extends Monster implements IAnimatable {
+public class SnailEntityClass extends TamableAnimal implements IAnimatable {
+
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public SnailEntityClass(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    private static final EntityDataAccessor<Boolean> SITTING =
+            SynchedEntityData.defineId(SnailEntityClass.class, EntityDataSerializers.BOOLEAN);
+
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(SnailEntityClass.class, EntityDataSerializers.INT);
+
+    public SnailEntityClass(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier setAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.05f).build();
+        return TamableAnimal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.075f).build();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        Item item = itemstack.getItem();
+
+        Item itemForTaming = Items.BROWN_MUSHROOM;
+
+        if(isFood(itemstack)) {
+            return super.mobInteract(player, hand);
+        }
+        if (item == itemForTaming && !isTame()) {
+            if (this.level.isClientSide) {
+                return InteractionResult.CONSUME;
+            } else {
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                if (!ForgeEventFactory.onAnimalTame(this, player)) {
+                    if (!this.level.isClientSide) {
+                        super.tame(player);
+                        this.navigation.recomputePath();
+                        this.setTarget(null);
+                        this.level.broadcastEntityEvent(this, (byte)7);
+                        setSitting(true);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND) {
+            setSitting(!isSitting());
+            return InteractionResult.SUCCESS;
+        }
+        if (itemstack.getItem() == itemForTaming) {
+            return InteractionResult.PASS;
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, false));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Creeper.class, true));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.5D));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.5D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 2.0D, Ingredient.of(Items.SLIME_BALL), false));
+        this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -61,7 +121,10 @@ public class SnailEntityClass extends Monster implements IAnimatable {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.snail.walk", true));
             return PlayState.CONTINUE;
         }
-
+        if (this.isSitting()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.snail.sitting", true));
+            return PlayState.CONTINUE;
+        }
         event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.snail.idle", true));
         return PlayState.CONTINUE;
     }
@@ -86,15 +149,107 @@ public class SnailEntityClass extends Monster implements IAnimatable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.DOLPHIN_HURT;
+        return SoundEvents.CAT_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.DOLPHIN_DEATH;
+        return SoundEvents.CAT_DEATH;
     }
 
     protected float getSoundVolume() {
         return 0.2F;
     }
 
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
+        SnailEntityClass baby = JDEntityTypes.SNAIL.get().create(level);
+        SnailVariant variant = Util.getRandom(SnailVariant.values(), this.random);
+        baby.setVariant(variant);
+        return baby;
+    }
+
+    @Override
+    public boolean isFood(ItemStack pStack) {
+        return pStack.getItem() == Items.SWEET_BERRIES;
+    }
+
+    @Override
+    public float getStepHeight() {
+        return 1.0F;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        setSitting(pCompound.getBoolean("isSitting"));
+        this.entityData.define(DATA_ID_TYPE_VARIANT, pCompound.getInt("Variant"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("isSitting", this.isSitting());
+        pCompound.putInt("Variant", this.getTypeVariant());
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SITTING, false);
+        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.entityData.set(SITTING, sitting);
+        this.setOrderedToSit(sitting);
+    }
+
+    public boolean isSitting() {
+        return this.entityData.get(SITTING);
+    }
+
+    @Override
+    public Team getTeam() {
+        return super.getTeam();
+    }
+
+    @Override
+    public boolean canBeLeashed(Player pPlayer) {
+        return false;
+    }
+
+    @Override
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
+        if (tamed) {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+
+        } else {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0D);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.075D);
+
+        }
+    }
+
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
+                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
+                                        @Nullable CompoundTag p_146750_) {
+        SnailVariant variant = Util.getRandom(SnailVariant.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
+    }
+
+    public SnailVariant getVariant() {
+        return SnailVariant.byId(this.getTypeVariant() & 255);
+    }
+
+    private int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+
+    private void setVariant(SnailVariant variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
 }

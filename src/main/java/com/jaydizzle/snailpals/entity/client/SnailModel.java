@@ -13,11 +13,12 @@ public class SnailModel extends AnimatedGeoModel<SnailEntityClass> {
 
     @Override
     public ResourceLocation getTextureResource(SnailEntityClass object) {
-        return new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail.png");
+        return SnailRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
     }
 
     @Override
     public ResourceLocation getAnimationResource(SnailEntityClass animatable) {
         return new ResourceLocation(SnailPals.MOD_ID, "animations/snail.animation.json");
     }
+
 }

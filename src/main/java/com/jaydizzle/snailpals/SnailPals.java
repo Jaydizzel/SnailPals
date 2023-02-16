@@ -4,6 +4,9 @@ import com.jaydizzle.snailpals.entity.JDEntityTypes;
 import com.jaydizzle.snailpals.entity.client.SnailRenderer;
 import com.jaydizzle.snailpals.item.JDItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,6 +43,9 @@ public class SnailPals {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            SpawnPlacements.register(JDEntityTypes.SNAIL.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    TamableAnimal::checkAnimalSpawnRules);
 
         });
     }

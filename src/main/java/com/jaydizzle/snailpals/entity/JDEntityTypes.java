@@ -16,10 +16,9 @@ public class JDEntityTypes {
 
     public static final RegistryObject<EntityType<SnailEntityClass>> SNAIL =
             ENTITY_TYPES.register("snail",
-                    () -> EntityType.Builder.of(SnailEntityClass::new, MobCategory.MONSTER)
-                            .sized(0.4f, 1.5f)
+                    () -> EntityType.Builder.of(SnailEntityClass::new, MobCategory.CREATURE)
+                            .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(SnailPals.MOD_ID, "snail").toString()));
-
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
