@@ -16,7 +16,7 @@ public class JDItems {
 
     public static final RegistryObject<Item> SNAIL_SPAWN_EGG = ITEMS.register("snail_spawn_egg",
             () -> new ForgeSpawnEggItem(JDEntityTypes.SNAIL, 0xBC8238, 0x40AB20,
-                    new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+                    new Item.Properties().tab(JDCreativeModeTab.SNAIL_TAB)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

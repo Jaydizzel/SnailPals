@@ -1,5 +1,6 @@
 package com.jaydizzle.snailpals.entity.custom;
 
+import com.jaydizzle.snailpals.SnailPals;
 import com.jaydizzle.snailpals.entity.JDEntityTypes;
 import com.jaydizzle.snailpals.entity.variant.SnailVariant;
 import net.minecraft.Util;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,7 +30,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -42,6 +46,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.Random;
 
 public class SnailEntityClass extends TamableAnimal implements IAnimatable {
 
@@ -129,16 +135,16 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
         return PlayState.CONTINUE;
     }
 
-        @Override
-        public void registerControllers (AnimationData data){
-            data.addAnimationController(new AnimationController(this, "controller",
-                    0, this::predicate));
-        }
+    @Override
+    public void registerControllers (AnimationData data){
+        data.addAnimationController(new AnimationController(this, "controller",
+                0, this::predicate));
+    }
 
-        @Override
-        public AnimationFactory getFactory () {
-            return factory;
-        }
+    @Override
+    public AnimationFactory getFactory () {
+        return factory;
+    }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.BEEHIVE_WORK, 0.15F, 1.0F);
@@ -233,12 +239,12 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
-                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
-                                        @Nullable CompoundTag p_146750_) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
+                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
+                                        @Nullable CompoundTag pDataTag) {
         SnailVariant variant = Util.getRandom(SnailVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     public SnailVariant getVariant() {
@@ -251,5 +257,9 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
 
     private void setVariant(SnailVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
+
+    public static boolean canSpawn(EntityType<SnailEntityClass> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkAnimalSpawnRules(entityType, level, spawnType, pos, random);
     }
 }

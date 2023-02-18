@@ -1,3 +1,6 @@
 {
-  "item.snailpals.snail_spawn_egg": "Snail Spawn Egg"
+  "item.snailpals.snail_spawn_egg": "Snail Spawn Egg",
+  "block.snailpals.snail_shell": "Snail Shell",
+  "entity.snailpals.snail": "Snail",
+  "itemGroup.snailModTab": "\u00a7a\u00a7lSnailPals"
 }

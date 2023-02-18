@@ -1,11 +1,12 @@
 package com.jaydizzle.snailpals;
 
+import com.jaydizzle.snailpals.block.JDBlocks;
 import com.jaydizzle.snailpals.entity.JDEntityTypes;
 import com.jaydizzle.snailpals.entity.client.SnailRenderer;
+import com.jaydizzle.snailpals.entity.custom.SnailEntityClass;
 import com.jaydizzle.snailpals.item.JDItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,21 +33,18 @@ public class SnailPals {
 
         GeckoLib.initialize();
 
-        eventBus.addListener(this::commonSetup);
-
         JDEntityTypes.register(eventBus);
         JDItems.register(eventBus);
+        JDBlocks.register(eventBus);
+        eventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
 
     }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    public void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            SpawnPlacements.register(JDEntityTypes.SNAIL.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    TamableAnimal::checkAnimalSpawnRules);
-
+            SpawnPlacements.register(JDEntityTypes.SNAIL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE,
+                    SnailEntityClass::canSpawn);
         });
     }
 
@@ -54,7 +52,7 @@ public class SnailPals {
     public static class ClientModEvents {
         @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-            EntityRenderers.register(JDEntityTypes.SNAIL.get(), SnailRenderer::new);
+      EntityRenderers.register(JDEntityTypes.SNAIL.get(), SnailRenderer::new);
         }
     }
 }

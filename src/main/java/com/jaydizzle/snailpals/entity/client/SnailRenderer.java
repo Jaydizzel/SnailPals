@@ -19,12 +19,12 @@ import java.util.Map;
 public class SnailRenderer extends GeoEntityRenderer<SnailEntityClass> {
 
     public static final Map<SnailVariant, ResourceLocation> LOCATION_BY_VARIANT =
-            Util.make(Maps.newEnumMap(SnailVariant.class), (p_114874_) -> {
-                p_114874_.put(SnailVariant.DEFAULT,
+            Util.make(Maps.newEnumMap(SnailVariant.class), (resourceLocation) -> {
+                resourceLocation.put(SnailVariant.DEFAULT,
                         new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
-                p_114874_.put(SnailVariant.BLUE,
+                resourceLocation.put(SnailVariant.BLUE,
                         new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
-                p_114874_.put(SnailVariant.GREEN,
+                resourceLocation.put(SnailVariant.GREEN,
                         new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
             });
 
