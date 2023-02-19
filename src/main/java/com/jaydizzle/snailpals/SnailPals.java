@@ -5,6 +5,8 @@ import com.jaydizzle.snailpals.entity.JDEntityTypes;
 import com.jaydizzle.snailpals.entity.client.SnailRenderer;
 import com.jaydizzle.snailpals.entity.custom.SnailEntityClass;
 import com.jaydizzle.snailpals.item.JDItems;
+import com.jaydizzle.snailpals.world.feature.JDConfiguredFeatures;
+import com.jaydizzle.snailpals.world.feature.JDPlacedFeatures;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -33,6 +35,8 @@ public class SnailPals {
 
         GeckoLib.initialize();
 
+        JDConfiguredFeatures.register(eventBus);
+        JDPlacedFeatures.register(eventBus);
         JDEntityTypes.register(eventBus);
         JDItems.register(eventBus);
         JDBlocks.register(eventBus);
@@ -43,16 +47,17 @@ public class SnailPals {
     }
     public void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            SpawnPlacements.register(JDEntityTypes.SNAIL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE,
-                    SnailEntityClass::canSpawn);
-        });
-    }
+                    SpawnPlacements.register(JDEntityTypes.SNAIL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE,
+                            SnailEntityClass::canSpawn);
+                });
+            }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
+
         @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-      EntityRenderers.register(JDEntityTypes.SNAIL.get(), SnailRenderer::new);
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(JDEntityTypes.SNAIL.get(), SnailRenderer::new);
         }
     }
 }

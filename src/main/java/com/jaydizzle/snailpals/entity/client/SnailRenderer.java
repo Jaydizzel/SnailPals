@@ -22,10 +22,12 @@ public class SnailRenderer extends GeoEntityRenderer<SnailEntityClass> {
             Util.make(Maps.newEnumMap(SnailVariant.class), (resourceLocation) -> {
                 resourceLocation.put(SnailVariant.DEFAULT,
                         new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
-                resourceLocation.put(SnailVariant.BLUE,
-                        new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
+                resourceLocation.put(SnailVariant.PINK,
+                        new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/pink_snail.png"));
                 resourceLocation.put(SnailVariant.GREEN,
-                        new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/snail.png"));
+                        new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/green_snail.png"));
+                resourceLocation.put(SnailVariant.YELLOW,
+                        new ResourceLocation(SnailPals.MOD_ID, "textures/entity/snail/yellow_snail.png"));
             });
 
     @Override
