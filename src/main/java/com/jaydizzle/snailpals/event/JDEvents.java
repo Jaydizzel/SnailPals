@@ -24,7 +24,7 @@ public class JDEvents {
     public static class ModEventBusEvents {
 
         @SubscribeEvent
-        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+        public static void entityAttributes(EntityAttributeCreationEvent event) {
             event.put(JDEntityTypes.SNAIL.get(), SnailEntityClass.setAttributes());
         }
     }
