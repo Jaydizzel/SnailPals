@@ -1,6 +1,6 @@
 {
   "type": "forge:add_spawns",
-  "biomes": "minecraft:plains",
+  "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "snailpals:snail",
     "weight": 40,

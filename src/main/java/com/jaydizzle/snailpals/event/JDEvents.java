@@ -23,9 +23,9 @@ public class JDEvents {
     @Mod.EventBusSubscriber(modid = SnailPals.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBusEvents {
 
-    }
-    @SubscribeEvent
-    public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        event.put(JDEntityTypes.SNAIL.get(), SnailEntityClass.setAttributes());
+        @SubscribeEvent
+        public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
+            event.put(JDEntityTypes.SNAIL.get(), SnailEntityClass.setAttributes());
+        }
     }
 }
