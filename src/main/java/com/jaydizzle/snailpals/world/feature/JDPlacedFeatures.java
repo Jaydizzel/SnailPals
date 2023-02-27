@@ -19,6 +19,11 @@ public class JDPlacedFeatures {
                     commonOrePlacement(32, //veins per chunk
                             HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(40), VerticalAnchor.aboveBottom(150))))); //spawn range
 
+    public static final RegistryObject<PlacedFeature> GARY_SHELL_PLACED = PLACED_FEATURES.register("gary_shell_placed",
+            () -> new PlacedFeature(JDConfiguredFeatures.GARY_SHELL.getHolder().get(),
+                    commonOrePlacement(10, //veins per chunk
+                            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(40), VerticalAnchor.aboveBottom(150))))); //spawn range
+
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome()); }
     public static List<PlacementModifier> commonOrePlacement(int p_195344_, PlacementModifier p_195345_) {

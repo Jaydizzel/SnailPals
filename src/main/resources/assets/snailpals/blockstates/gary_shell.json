@@ -1,0 +1,23 @@
+{
+  "variants": {
+
+    "facing=east": {
+      "model": "snailpals:block/gary_shell",
+      "y": 90
+    },
+
+    "facing=north": {
+      "model": "snailpals:block/gary_shell"
+    },
+
+    "facing=south": {
+      "model": "snailpals:block/gary_shell",
+      "y": 180
+    },
+
+    "facing=west": {
+      "model": "snailpals:block/gary_shell",
+      "y": 270
+    }
+  }
+}

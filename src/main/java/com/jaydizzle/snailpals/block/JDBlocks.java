@@ -26,6 +26,9 @@ public class JDBlocks {
     public static final RegistryObject<Block> SNAIL_SHELL = registerBlock("snail_shell",
             () -> new SnailShellBlock(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.0f, 1.0f).noOcclusion()));
 
+    public static final RegistryObject<Block> GARY_SHELL = registerBlock("gary_shell",
+            () -> new GaryShellBlock(BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.0f, 1.0f).noOcclusion()));
+
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, String tooltipKey) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, tooltipKey);

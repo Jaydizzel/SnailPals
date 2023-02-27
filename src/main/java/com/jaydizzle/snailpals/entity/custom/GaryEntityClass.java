@@ -1,8 +1,6 @@
 package com.jaydizzle.snailpals.entity.custom;
 
 import com.jaydizzle.snailpals.entity.JDEntityTypes;
-import com.jaydizzle.snailpals.entity.variant.SnailVariant;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -42,17 +40,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class SnailEntityClass extends TamableAnimal implements IAnimatable {
+public class GaryEntityClass extends TamableAnimal implements IAnimatable {
 
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(SnailEntityClass.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(GaryEntityClass.class, EntityDataSerializers.BOOLEAN);
 
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(SnailEntityClass.class, EntityDataSerializers.INT);
-
-    public SnailEntityClass(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    public GaryEntityClass(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -162,9 +157,7 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        SnailEntityClass baby = JDEntityTypes.SNAIL.get().create(level);
-        SnailVariant variant = Util.getRandom(SnailVariant.values(), this.random);
-        baby.setVariant(variant);
+        GaryEntityClass baby = JDEntityTypes.GARY.get().create(level);
         return baby;
     }
 
@@ -182,21 +175,18 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setSitting(pCompound.getBoolean("isSitting"));
-        this.entityData.define(DATA_ID_TYPE_VARIANT, pCompound.getInt("Variant"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("isSitting", this.isSitting());
-        pCompound.putInt("Variant", this.getTypeVariant());
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
-        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     public void setSitting(boolean sitting) {
@@ -235,24 +225,11 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
                                         MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
                                         @Nullable CompoundTag pDataTag) {
-        SnailVariant variant = Util.getRandom(SnailVariant.values(), this.random);
-        setVariant(variant);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    public SnailVariant getVariant() {
-        return SnailVariant.byId(this.getTypeVariant() & 255);
-    }
 
-    private int getTypeVariant() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
-
-    private void setVariant(SnailVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
-
-    public static boolean canSpawn(EntityType<SnailEntityClass> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean canSpawn(EntityType<GaryEntityClass> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getBlockState(pos).is(Blocks.GRASS_BLOCK);
     }
 }

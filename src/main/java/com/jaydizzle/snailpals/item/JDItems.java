@@ -18,6 +18,10 @@ public class JDItems {
             () -> new ForgeSpawnEggItem(JDEntityTypes.SNAIL, 0xBC8238, 0x40AB20,
                     new Item.Properties().tab(JDCreativeModeTab.SNAIL_TAB)));
 
+    public static final RegistryObject<Item> GARY_SPAWN_EGG = ITEMS.register("gary_spawn_egg",
+            () -> new ForgeSpawnEggItem(JDEntityTypes.GARY, 0x1ecbe1, 0xfd79be,
+                    new Item.Properties().tab(JDCreativeModeTab.SNAIL_TAB)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
