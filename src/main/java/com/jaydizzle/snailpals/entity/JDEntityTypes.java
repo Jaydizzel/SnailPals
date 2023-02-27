@@ -16,14 +16,12 @@ public class JDEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SnailPals.MOD_ID);
 
-    public static final RegistryObject<EntityType<SnailEntityClass>> SNAIL =
-            ENTITY_TYPES.register("snail",
+    public static final RegistryObject<EntityType<SnailEntityClass>> SNAIL = ENTITY_TYPES.register("snail",
                     () -> EntityType.Builder.of(SnailEntityClass::new, MobCategory.CREATURE)
                             .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(SnailPals.MOD_ID, "snail").toString()));
 
-    public static final RegistryObject<EntityType<GaryEntityClass>> GARY =
-            ENTITY_TYPES.register("gary",
+    public static final RegistryObject<EntityType<GaryEntityClass>> GARY = ENTITY_TYPES.register("gary",
                     () -> EntityType.Builder.of(GaryEntityClass::new, MobCategory.CREATURE)
                             .sized(0.5f, 0.5f)
                             .build(new ResourceLocation(SnailPals.MOD_ID, "gary").toString()));
