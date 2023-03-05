@@ -3,8 +3,8 @@
   "biomes": "#snailpals:snail_biomes",
   "spawners": {
     "type": "snailpals:snail",
-    "maxCount": 2,
+    "maxCount": 5,
     "minCount": 1,
-    "weight": 600
+    "weight": 60
   }
 }

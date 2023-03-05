@@ -228,8 +228,7 @@ public class GaryEntityClass extends TamableAnimal implements IAnimatable {
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-
     public static boolean canSpawn(EntityType<GaryEntityClass> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return checkAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getBlockState(pos).is(Blocks.GRASS_BLOCK);
+        return checkAnimalSpawnRules(entityType, level, spawnType, pos, random);
     }
 }

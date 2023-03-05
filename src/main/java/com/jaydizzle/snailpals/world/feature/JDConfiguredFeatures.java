@@ -25,7 +25,7 @@ public class JDConfiguredFeatures {
     public static final Supplier<List<OreConfiguration.TargetBlockState>> SNAIL_SHELLS = Suppliers.memoize(() -> List.of(
             OreConfiguration.target(FillerBlockType.GRASS, JDBlocks.SNAIL_SHELL.get().defaultBlockState())));
     public static final RegistryObject<ConfiguredFeature<?, ?>> SNAIL_SHELL = CONFIGURED_FEATURES.register("snail_shell",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(SNAIL_SHELLS.get(), 1))); //vein size
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(SNAIL_SHELLS.get(), 2))); //vein size
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> GARY_SHELLS = Suppliers.memoize(() -> List.of(
             OreConfiguration.target(FillerBlockType.GRASS, JDBlocks.GARY_SHELL.get().defaultBlockState())));

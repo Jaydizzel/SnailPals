@@ -253,6 +253,6 @@ public class SnailEntityClass extends TamableAnimal implements IAnimatable {
     }
 
     public static boolean canSpawn(EntityType<SnailEntityClass> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return checkAnimalSpawnRules(entityType, level, spawnType, pos, random) && level.getBlockState(pos).is(Blocks.GRASS_BLOCK);
+        return checkAnimalSpawnRules(entityType, level, spawnType, pos, random);
     }
 }
