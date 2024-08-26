@@ -1,0 +1,23 @@
+{
+  "variants": {
+
+    "facing=east": {
+      "model": "snailpals:block/snail_shell",
+      "y": 90
+    },
+
+    "facing=north": {
+      "model": "snailpals:block/snail_shell"
+    },
+
+    "facing=south": {
+      "model": "snailpals:block/snail_shell",
+      "y": 180
+    },
+
+    "facing=west": {
+      "model": "snailpals:block/snail_shell",
+      "y": 270
+    }
+  }
+}

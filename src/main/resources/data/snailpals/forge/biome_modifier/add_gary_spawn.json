@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#snailpals:snail_biomes",
+  "spawners": {
+    "type": "snailpals:gary",
+    "maxCount": 2,
+    "minCount": 1,
+    "weight": 2
+  }
+}

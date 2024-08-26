@@ -1,0 +1,9 @@
+{
+  "item.snailpals.snail_spawn_egg": "Snail Spawn Egg",
+  "item.snailpals.gary_spawn_egg": "Gary Spawn Egg",
+  "block.snailpals.snail_shell": "Snail Shell",
+  "block.snailpals.gary_shell": "Gary's Shell",
+  "entity.snailpals.snail": "Snail",
+  "entity.snailpals.gary": "Gary",
+  "creativetab.snail_tab": "\u00a76\u00a7lSnail Pals"
+}

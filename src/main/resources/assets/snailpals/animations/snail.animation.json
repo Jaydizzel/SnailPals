@@ -1,0 +1,64 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.snail.idle": {
+      "loop": true,
+      "bones": {
+        "eyes": {
+          "position": {
+            "vector": [0, 0, 0]
+          }
+        }
+      }
+    },
+    "animation.snail.walk": {
+      "animation_length": 0.5,
+      "bones": {
+        "body": {
+          "position": {
+            "0.25": {
+              "vector": [0, 0, -1]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        },
+        "shell": {
+          "position": {
+            "0.25": {
+              "vector": [0, 0, -1]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        },
+        "eyes": {
+          "position": {
+            "0.25": {
+              "vector": [0, 0, -1]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        },
+        "face": {
+          "position": {
+            "0.25": {
+              "vector": [0, 0, -1]
+            },
+            "0.5": {
+              "vector": [0, 0, 0]
+            }
+          }
+        }
+      }
+    },
+    "animation.snail.sitting": {
+      "loop": true
+    }
+  },
+  "geckolib_format_version": 2
+}

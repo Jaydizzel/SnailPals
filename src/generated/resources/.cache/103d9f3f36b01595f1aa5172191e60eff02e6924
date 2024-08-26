@@ -1,0 +1,4 @@
+// 1.20.1	2024-08-25T02:18:53.9595224	Registries
+defd6807dc4de3a9b02279b389ea68a911dc4e25 data/snailpals/forge/biome_modifier/add_snail_shell.json
+f770ffa7d97df7532b755351e5a4390f563176dd data/snailpals/worldgen/configured_feature/snail_shell.json
+c06fefc88426bf8525c86fe9de9f35bce8be8e05 data/snailpals/worldgen/placed_feature/snail_shell_placed.json
