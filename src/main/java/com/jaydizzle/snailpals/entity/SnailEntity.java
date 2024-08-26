@@ -90,7 +90,7 @@ public class SnailEntity extends TamableAnimal {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.entityData.define(DATA_ID_TYPE_VARIANT, pCompound.getInt("Variant"));
+        this.entityData.set(DATA_ID_TYPE_VARIANT, pCompound.getInt("Variant"));
         setSitting(pCompound.getBoolean("isSitting"));
 
     }
