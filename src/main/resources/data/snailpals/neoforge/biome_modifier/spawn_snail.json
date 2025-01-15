@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#snailpals:snail_biomes",
+  "spawners": {
+    "type": "snailpals:snail",
+    "maxCount": 4,
+    "minCount": 1,
+    "weight": 30
+  }
+}
